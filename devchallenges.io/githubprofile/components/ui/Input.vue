@@ -1,41 +1,59 @@
 <script setup lang="ts">
-const loading = ref(false)
-const selected = ref()
+const loading = ref(false);
+const selected = ref();
 
-async function search (q: string) {
-    loading.value = true
-
-    const users = await $fetch<any[]>('https://jsonplaceholder.typicode.com/users', { params: { q, } })
-
-    loading.value = false
-    const limitedUsers = users.slice(0, 8)
-
-    return limitedUsers
+async function search(q: string): Promise<any[]> {
+    loading.value = true;
+    try {
+        const data = await $fetch<any[]>("/api/github-search", {
+            params: { q },
+        });
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error("Erreur lors de la recherche d'utilisateurs:", error);
+        return [];
+    } finally {
+        loading.value = false;
+    }
 }
 </script>
 
 <template>
-  <UInputMenu
-    v-model="selected"
-    :search="search"
-    :loading="loading"
-    search-lazy
-    :debounce="300"
-    icon="i-heroicons-magnifying-glass-20-solid"
-    placeholder="Search for a user..."
-    option-attribute="name"
-    trailing-icon="none"
-    by="id"
-    class="w-full max-w-4xl"
-    size="xl"
-  >
-    <template #option="{ option: user }">
-      <div class="flex items-center">
-        <UAvatar v-if="user.avatar" :src="user.avatar" size="sm" class="mr-2" />
-        <span>{{ user.name }}</span>
-      </div>
-    </template>
-  </UInputMenu>
+    <div class="w-full custom-bg">
+        <UInputMenu
+            v-model="selected"
+            :search="search"
+            :loading="loading"
+            search-lazy
+            :debounce="300"
+            icon="i-heroicons-magnifying-glass-20-solid"
+            placeholder="username"
+            option-attribute="login"
+            trailing-icon="none"
+            by="id"
+            :ui="{
+                rounded: 'rounded-xl',
+            }"
+            :uiMenu="{
+                rounded: 'rounded-xl',
+            }"
+            size="xl"
+            height="h-[50px]"
+        >
+            <template #option="{ option: user }">
+                <div class="flex items-center square-avatar space-x-4">
+                    <UAvatar
+                        v-if="user.avatar_url"
+                        :src="user.avatar_url"
+                        size="2xl"
+                        borderRadius="none"
+                        :ui="{ rounded: 'rounded-md' }"
+                    />
+                    <span class="text-2xl text-center">{{ user.login }}</span>
+                    <span> </span>
+                </div>
+            </template>
+        </UInputMenu>
+    </div>
 </template>
-
-

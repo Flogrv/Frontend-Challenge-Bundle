@@ -1,8 +1,18 @@
 <template>
-    <div class="flex justify-between bg-[url('/img/hero-image-github-profile.png')] bg-cover bg-center min-h-60">
-        <AppHeader />
-        <!-- <ColorScheme> -->
-        <!--     <USelect v-model="$colorMode.preference" :options="['system', 'light', 'dark']" /> -->
-        <!-- </ColorScheme> -->
-    </div>
+    <AppHeader />
+    <UContainer class="px-11 max-w-4xl sm:px-10">
+        <AppMain />
+        <RepoCardcontainer/>
+        <AppFooter />
+    </UContainer>
+    <!-- <ColorScheme> -->
+    <!--     <USelect v-model="$colorMode.preference" :options="['system', 'light', 'dark']" /> -->
+    <!-- </ColorScheme> -->
 </template>
+
+<style>
+body {
+    background-color: #20293a;
+    font-family: "be vietnam pro", sans-serif;
+}
+</style>
