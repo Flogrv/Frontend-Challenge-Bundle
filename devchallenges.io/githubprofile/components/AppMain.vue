@@ -1,9 +1,9 @@
 <template>
-    <div class="flex m-auto">
-<div class="flex flex-col sm:flex-row gap-4">
+    <div v-if="firstUser" class="flex m-auto">
+        <div class="flex flex-col sm:flex-row gap-4">
             <div class="relative xs:mr-8 bottom-4 flex-shrink-0 self-start">
                 <UAvatar
-                    src="https://avatars.githubusercontent.com/u/9919?s=200&v=4"
+                    :src="firstUser.avatar_url || 'https://avatars.githubusercontent.com/u/9919?s=200&v=4'"
                     size="3xl"
                     borderRadius="none"
                     :ui="{ rounded: 'rounded-md' }"
@@ -18,23 +18,43 @@
                     v-for="(item, index) in infoItems"
                     :key="index"
                     :title="item.title"
-                    :value="item.value"
+                    :value="getUserInfo(item.title)"
                 />
             </div>
         </div>
-
     </div>
-    <div class=" m-auto mt-6">
-        <h1 class="text-3xl">Github</h1>
-        <p class="text-gray-300 mt-2">How people build software</p>
+    <div v-else class="m-auto mt-6">
+        <p>Aucun résultat de recherche disponible</p>
     </div>
-
+    <div v-if="firstUser" class="m-auto mt-6">
+        <h1 class="text-3xl">{{firstUser.login}}</h1>
+        <p class="text-gray-300 mt-2">{{firstUser.bio}}</p>
+    </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed } from 'vue';
+
+const props = defineProps<{
+  searchData: Array<{
+    login: string;
+    avatar_url?: string;
+    followers?: number;
+    following?: number;
+    location?: string;
+  }> | null
+}>();
+
+const firstUser = computed(() => props.searchData && props.searchData.length > 0 ? props.searchData[0] : null);
+
 const infoItems = [
-    { title: "Followers", value: "42" },
-    { title: "Following", value: "0" },
-    { title: "Location", value: "San Francisco" },
+    { title: "Followers", value: "followers" },
+    { title: "Following", value: "following" },
+    { title: "Location", value: "location" },
 ];
+
+function getUserInfo(key: string) {
+    if (!firstUser.value) return 'N/A';
+    return firstUser.value[key.toLowerCase() as keyof typeof firstUser.value]?.toString() || 'N/A';
+}
 </script>

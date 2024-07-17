@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 const loading = ref(false);
 const selected = ref();
+const emit = defineEmits(['search-results']);
 
 async function search(q: string): Promise<any[]> {
     loading.value = true;
@@ -8,7 +10,7 @@ async function search(q: string): Promise<any[]> {
         const data = await $fetch<any[]>("/api/github-search", {
             params: { q },
         });
-        console.log(data);
+        emit('search-results', data);
         return data;
     } catch (error) {
         console.error("Erreur lors de la recherche d'utilisateurs:", error);
@@ -40,6 +42,7 @@ async function search(q: string): Promise<any[]> {
             }"
             size="xl"
             height="h-[50px]"
+            class="focus:ring-2 focus:ring-blue-950"
         >
             <template #option="{ option: user }">
                 <div class="flex items-center square-avatar space-x-4">
