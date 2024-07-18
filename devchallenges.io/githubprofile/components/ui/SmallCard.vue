@@ -1,5 +1,5 @@
 <template>
-    <div class="flex max-w-xs items-center">
+    <div class="flex max-w-xs items-center text-sm">
         <div class="flex bg-[#111729] px-4 py-4 rounded-2xl justify-between gap-6">
             <div class="space-y-2">
                 <span class="text-[#4A5567]">{{ title }}</span>

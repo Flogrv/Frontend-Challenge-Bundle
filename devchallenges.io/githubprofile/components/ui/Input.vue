@@ -19,6 +19,9 @@ async function search(q: string): Promise<any[]> {
         loading.value = false;
     }
 }
+onMounted(() => {
+    search('github');
+});
 </script>
 
 <template>
@@ -43,6 +46,8 @@ async function search(q: string): Promise<any[]> {
             size="xl"
             height="h-[50px]"
             class="focus:ring-2 focus:ring-blue-950"
+            :style="{ backgroundColor: '#20293a' }"
+
         >
             <template #option="{ option: user }">
                 <div class="flex items-center square-avatar space-x-4">

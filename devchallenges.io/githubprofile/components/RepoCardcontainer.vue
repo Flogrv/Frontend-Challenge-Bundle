@@ -9,7 +9,7 @@
         />
     </div>
     <div v-else>
-        Aucun utilisateur ou données de repo disponibles.
+
     </div>
 </template>
 
