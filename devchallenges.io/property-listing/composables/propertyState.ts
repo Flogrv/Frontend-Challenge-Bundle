@@ -1,6 +1,4 @@
 // composables/usePropertyState.ts
-import { ref, computed, reactive } from 'vue'
-import { useAsyncData, queryContent } from '#imports'
 
 const state = reactive({
   selectedCountry: 'All stays',
